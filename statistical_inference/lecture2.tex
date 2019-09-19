@@ -1,0 +1,54 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{amsmath, amssymb}
+\title{统计推断 第二周}
+\author{Edward}
+\begin{document}
+\maketitle
+
+\section{Muller Methods}%
+\label{sec:muller_methods}
+
+如何生成一个二维标准正态随机变量？
+
+生成下面的随机数 \[
+    \begin{cases}
+        \frac{r^{2}}{2} \sim Exp \left( 1 \right) \\
+        \theta \sim U\left(0,1  \right) 
+    \end{cases}
+.\] 
+
+
+然后进行坐标变换 \[
+    \begin{cases}
+        x &= r \cos \theta \\
+        y &= r \sin \theta \\
+    \end{cases}
+.\] 
+
+
+\section{取舍原则}%
+\label{sec:取舍原则}
+
+生成密度为 $ p_0\left(x  \right)  $ 
+
+
+ \[
+     Pr\left(\ita<x  \right)  &=  Pr\left( \ksai <x | \kai _k kept \right)  \\
+.\] 
+
+
+\section{MCMC}%
+\label{sec:mcmc}
+
+Markov Chain的遍历性定理： 若有限状态 Markov chain 的所有状态都是互通的，f 是状态空间上的youjie实值函数且满足 $ \sum_{i} $ 则
+
+\[
+    Pr\left( \frac{f\left(\ksai_1  \right) + \dots + f\left( \ksai_n  \right)  }{n} \to \sum_{i} f\left(\ksai_i  \right) \pi_i \right) = 1 
+.\] 
+
+其中 $ \pi $  是Markov chain 的不变分布，而且此极限与初始分布无关
+
+优点：动态地生成随机数。可以用来生成高维的概率分布
+
+
+\end{document}

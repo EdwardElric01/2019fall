@@ -1,0 +1,140 @@
+
+\documentclass[UTF8]{ctexart}
+\usepackage{amsmath}
+\begin{document}
+\title{Sparse Linear Regression}
+\maketitle
+
+Motivation: To improve OLSE
+
+\begin{enumerate}
+    \item \textbf{prediction} 
+        \[
+            \text{MSE} = \text{bias}^2 + \text{variance}
+    .\] 
+
+trade bise for variance. "Shrinkage toward zero". 
+
+    \item \textbf{interpretation} sparsity. 需要较少的变量
+
+    \item \textbf{stability} not sensitive to small perturbations of data.
+
+\end{enumerate}
+
+\section{Best xx selection}%
+\label{sec:best_xx_selection}
+
+\[
+    minimize  RSS\left( \beta \right) s.t 2\|\beta\|_0 \le k
+.\] 
+
+Note that  $\|\beta\|_0 = \#\{\beta \neq 0\}$.
+
+
+\section{StepWise Selection}%
+\label{sec:stepwise_selection}
+
+\section{Shrinkage Methods}%
+\label{sec:shrinkage_methods}
+
+
+\subsection{Ridge Regression}%
+\label{sub:ridge_regression}
+
+\begin{align*}
+    \hat{\beta} &= argmin \left(RSS\left(\beta  \right) + \lambda \|\beta\|^2_2 \right) \\
+       &= argmin (\|y-X\beta\|_2^2 + \lambda \|\beta\|_2^2)
+.\end{align*}
+
+Note that this is a convex optimization problem, thus can be addressed as follows:
+
+\begin{center}
+    {minimize} $RSS\left( \beta \right) $
+    s.t $\|\beta\|_2^2 \le \lambda$
+\end{center}
+
+And this problem as an explict solution: \[
+    \hat{\beta}^{ridge} = \left( X^{T}X + \lambda I\right) X y
+.\] 
+
+
+SVD: \[
+    X = UDV^{T}
+.\] 
+
+where X is $n \times n$ and U is n x n, and V is $p \times p$ , and D is $n \times p$. And $rank\left(X  \right) = r$ 
+
+For OLS, we have,
+
+\[
+    X \hat{\beta}^{ols} = X \left( X^TX \right) ^{-1} X^{T} y = u u^{T} y
+.\] 
+
+For Ridge Regression, we have
+
+\begin{align*}
+    X \hat{\beta}^{ridge}\left( \lambda \right)  &= X\left(X^{T}X + \lambda I  \right)  ^{-1} X ^{T}y \\
+    &= UDV^{T}\left(VD^{T}U^{T}UDV^{T} + \lambda I  \right) ^{-1} VDU^{T} y \\
+    &= UDV^{T}\left(VD^{T}DV^{T} + \lambda I \right)^{-1} VDU^T y \\
+    &= UDV^TV(D^TD + \lambda)^{-1} V^TV DU^Ty \\
+    &= UD(D^TD + \lambda)^{-1} D U^T y \\
+    &= \sum_{j=1}^{r} \frac{d_j^2}{d_j^2 + \lambda} u_j u_j^T y
+.\end{align*}
+
+\subsection{Ridge Regression from Baysesian Horizon}%
+\label{sub:ridge_regression_from_baysesian_horizon}
+
+Ridge Regression 在 Bayesian 视角在有一个合理的解释。如果 $\beta_j$ 的分布为 $N\left(0, r^2 \right) $ 分布，则 $\beta_j$ 的后验分布为
+
+\begin{align*}
+    y \sim N(X\beta, \sigma^2 I) \\
+    \beta_j \sim N(0, r^2)
+.\end{align*}
+
+\subsection{Lasso}%
+\label{sub:lasso}
+
+\[
+    \hat{\beta} ^{lasso} = \text{argmin} \{ \frac{\|y-X\beta\|}{2n} + \lambda \|\beta\|_1\}
+.\] 
+
+equivelently, this problem can be addressed as follows:
+
+\[
+     \text{minimize} \|y - X\beta\|_2 ^{2} \text{s.t} \|\beta\| \le k
+.\] 
+
+\textbf{Remark}
+\begin{enumerate}
+    \item No explict solution
+    \item Bayesian interpretation
+\end{enumerate}
+
+\begin{align*}
+    y \sim N(X\beta, \sigma^2 I) \\
+    \beta_j \sim Laplace()
+.\end{align*}
+
+$\beta _{i}$ 后验分布的 Mode  中 Lasso 的解
+
+\subsection{Orthogonal Design($X^TX=I$)}%
+\label{sub:orthogonal_design}
+
+\begin{enumerate}
+    \item L0 penalty
+        \[
+            \hat{\beta} ^{bs} = \hat{\beta} _{j} ^{ols} I \left\{ \left| \beta _{j} \right| \ge \text{max} \left| \beta _{i} ^{ols} \right| \right\} 
+        .\] 
+    \item L2 penalty
+        \[
+            \hat{\beta} ^{ridge} _{j} = \frac{1}{1+\lambda}  + \hat{\beta} ^{ols}
+        .\] 
+    \item L1 penalty
+        \[
+            \hat{\beta} _{j} ^{lasso} = sgn\left( \hat{\beta} _j ^{ols} \left(\left| \hat{\beta}_j ^{ols} \right| - \lambda   \right)   \right) 
+        .\] 
+\end{enumerate}
+
+
+\end{document}
+

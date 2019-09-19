@@ -1,0 +1,171 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{minted} 
+\usepackage{indentfirst} 
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{a4paper, scale=0.8}
+
+\begin{document}
+\title{作业：引论}
+\maketitle
+\section{拿石子问题}%
+\label{sec:拿石子问题}
+
+\begin{enumerate}
+    \item \textbf{证明} n为Fibonacci数时乙有必胜策略
+
+\textbf{proof} \textbf{数学归纳法} 
+
+设 Fibonacci 序列为 $\left\{ F_n \right\} _{n=2} ^{\infty}, F_2 = 2$ 
+\begin{enumerate}
+    \item $n=2$时，可能的取法只有一种，甲取1个，乙取1个，显然乙必胜。
+
+    \item 假设 $k\le n$ 时乙必胜，当 $k=n+1$ 时，由Fibonacci数的性质， \[
+    F _{n+1} = F_n + F _{n-1}
+    .\] 
+
+    \begin{enumerate}
+        \item 若 $m _{\text{甲}}^{1} \ge F _{n-1}$，由于 $F _{n+1} = F_n + F _{n-1} < 3 F_n$，$m _{\text{乙}} ^{1} = F _{n+1} - m _{\text{甲}} ^{1} < 2 F _{n-1} < 2 m _{\text{甲}} ^{1}$，故此时乙可胜利
+        \item 若 $m _{\text{甲}}^{1} < F _{n-1}$，则可以将石子看做两堆，一堆 $F_n$ 个（记作A），一堆  $F _{n-1}$ 个（记作B）,由于 $m _{\text{甲}} ^{1} < F _{n-1}$，因此可以看作甲、乙两人先从B堆中开始拿。由归纳假设，此时乙有策略使乙恰好拿完B的最后一颗石子。
+
+
+            下面说明在乙取完B堆的最后一颗石子之后，甲下次不可能取完A堆。设乙第 $ l $ 次时正好取完了B堆的最后一颗石子，则易知 $m _{\text{乙}} ^{1} \le \frac{2}{3} F_{n-1}$，因此只需要比较 $ \frac{4}{3} F_{n-1} $ 和 $ F_{n} $ 的大小即可, 相当于比较 $ 4 F_{n-1} $ 和 $ 3 F_{n} $ 的大小 \[
+                3 F_{n} - 4 F_{n-1} =  3 F_{n-2} - F_{n-1} > 0
+            .\] 
+
+        即 $ F_n > \frac{4}{3} F_{n-1}$ ，因此，下次甲最多拿 $ \frac{4}{3} F_{n-1} $ 个石子，不会取完A堆。
+
+
+        这说明，在乙取完B堆后，问题转化为甲乙两从石子数为 $ F_{n} $ 重新开始游戏，由数学归纳法原理，乙有必胜策略。
+
+        \end{enumerate}
+    \end{enumerate}
+
+
+\item \textbf{证明} n不是 Fibonacci数时，甲有必胜策略。
+    不会
+\end{enumerate}
+
+\section{求递归式的渐近表示}%
+\label{sec:求递归式的渐近表示}
+
+\begin{enumerate}
+    \item $ T\left( n \right) = T \left( n-1 \right) + n  $ 
+
+        \textbf{solution:}
+        \begin{align*}
+            T\left( n \right)  - T\left( n-1 \right)  = n  \\
+            T\left( n-1 \right)  - T\left( n-2 \right)   = n-1  \\
+            \ldots \\
+            T\left( 2 \right)  - T\left( 1 \right)   = 2  \\
+        .\end{align*}
+        将上式累加，有
+        \[
+            T\left( n \right) = T\left( 1 \right) - 1 +  \frac{\left( n+1 \right)n  }{2} 
+        .\] 
+    因此，$ T\left( n \right) = \Theta \left( n^2 \right)  $
+
+    \item   
+        \[
+            \begin{cases}
+                T\left( 1 \right) = T\left( 2 \right) = 1   \\
+                T\left( n \right)  = T\left( n-1 \right) + T\left( n-2 \right) , n \ge 3
+            \end{cases}
+        .\] 
+
+        \textbf{solution:}
+
+        上述表达的特征方程为  \[
+        x^{2} = x + 1
+        .\] 
+    方程的解为 \[
+           x_{1,2} =  \frac{1 \pm \sqrt{2} }{2} 
+    .\] 
+
+因此，$ T\left( n \right)  $ 的表达式为 \[
+    T\left( n \right)  = a \left(  \frac{1+\sqrt{2} }{2}\right) ^{n} + b \left(  \frac{1-\sqrt{2} }{2} \right)^{n}
+.\] 
+
+所以，$ T\left( n \right)  $ 的渐近表达式为  $ T\left( n \right)  = \Theta\left( 2^{n} \right) $
+
+    \item $ T\left( n \right)  = T\left( \left| \sqrt{n}  \right|  \right) + 1 $
+
+        \textbf{solution:}
+
+        设 $ n = 2^{k} $ 则 $ k = \log_{2} n $ ，有 
+
+        \begin{align*}
+            T\left( n \right) &= T\left( \sqrt{2^{k}}  \right)  + 1  \\
+            &= T\left( 2^{k-1}  \right) + 1 \\
+            &= T\left( 2^{k-2}  \right) + 2 \\
+            \ldots \\
+            &= T\left( 2^{0}  \right) + k \\
+            &= T \left( 1\right)  + k \\
+            &= \log_{2} n
+        .\end{align*}
+        因此，$ T\left(n  \right)  = \Theta\left( \log n \right)  $
+    \item $ T\left( n \right) = \frac{n}{n-1} T\left( n-1 \right)  + 1 $
+
+        \textbf{solution:}
+            \begin{align*}
+                    T\left( n \right)  &=  \frac{n}{n-1} T \left( n-1 \right)  + 1 \\
+                &= \frac{n}{n-2} T\left( n-2 \right) + \frac{n}{n-1} + 1 \\
+                &= \ldots \\
+                &= \frac{n}{1} T\left(1  \right)  + \frac{n}{2} + \ldots + \frac{n}{n-1} + 1 \\
+                &=  n T\left( 1 \right)  + \sum_{i=2}^{n} \frac{1}{i-1} \\
+                &= n T\left( 1 \right)  + n \ln n  + \epsilon_n - 1
+            .\end{align*}
+
+    其中 $ \lim_{n \to \infty} \epsilon_n = \epsilon  $  ，$ \epsilon $ 为欧拉常数 
+
+    因此 $ T\left( n \right)  = \Theta\left(  n \log n\right) $
+\end{enumerate}
+
+\section{有序拆分问题}%
+\label{sec:有序拆分问题}
+
+下面是用python语言实现的算法：
+
+    \begin{minted}{Python}
+    import copy
+
+    def OrderedSplit(n):
+        if n == 1:
+            return [[1]]
+        else:
+            result = [[n]]
+            for element in OrderedSplit(n-1):
+                result.append([1] + element)
+                result.append(element + [1])
+            # 去重
+            new_result = copy.deepcopy(result)
+            for i in range(len(result)):
+                for j in range(i+1, len(result)):
+                    if result[i] == result[j]:
+                        new_result.remove(result[j])
+            return new_result
+    \end{minted}
+
+分析：这个算法中使用到了递归，$ n+1 $ 时的输出是通过 $ n $ 时得到的。并且还包含了去重操作，设其时间复杂度为 $ T\left( n \right) $，则有下面的式子成立
+\[
+    \begin{cases}
+        T\left( 1  \right)  = 1 \\
+        T\left( n \right)  = T\left( n-1  \right)  + \Theta\left( n^{2} \right)  
+    \end{cases}
+.\] 
+
+其中 $ \Theta(n^{2}) $ 是去重操作的时间复杂度。有
+
+\[
+    \begin{aligned}
+        T\left( n \right) &= T\left( n-1 \right)  + \Theta\left( n^{2} \right)  \\
+        &=  T\left( n-1 \right)  + c n^{2}\\ 
+        &= \cdots \\
+        &= T\left( 1 \right)  + c \sum_{i=2}^{n} i^{2} \\
+        &=  c \sum_{i=1}^{n}i^{2} \\
+        &= c \frac{1}{6} n \left( n+1 \right) \left( 2n+1 \right)  \\
+        &= \Theta\left( n^{3} \right)  \\
+    \end{aligned}
+.\] 
+
+\end{document}
